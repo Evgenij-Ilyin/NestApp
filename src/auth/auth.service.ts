@@ -10,7 +10,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, password: string): Promise<any> {
+  async signIn(username: string, password: string): Promise<{access_token: string}> {
     const user = await this.usersService.findOne(username);
 
     if (!user) {
@@ -23,20 +23,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid username or password');
     }
 
-    const { password: _, ...result } = user;
-    return result;
-  }
-
-  async signUp(username: string, password: string): Promise<any> {
-    const hashedPassword = await hash(password, 10);
-    // Save the user with the hashed password to the database
-    const user = await this.usersService.createUser(username, hashedPassword);
-    return user;
-  }
-
-  async login(user: any): Promise<{ access_token: string }> {
-    const payload = { username: user.username, sub: user.userId };
-    const access_token = this.jwtService.sign(payload);
-    return { access_token };
+    const payload = { username: user.username, sub: user.id};
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }

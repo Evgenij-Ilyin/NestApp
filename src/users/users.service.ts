@@ -5,6 +5,7 @@ import { UsersRepository } from './usersRepository';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { hash } from 'bcrypt';
 
 
 
@@ -17,6 +18,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    createUserDto.password = await hash(createUserDto.password, 10);
     const user = this.UsersRepository.create(createUserDto);
     return this.UsersRepository.save(user);
   }
@@ -25,8 +27,8 @@ export class UsersService {
     return this.UsersRepository.find();
   }
 
-  findOne(id: string): Promise<User | null> {
-    return this.UsersRepository.findOneBy({ id });
+  findOne(username: string): Promise<User | null> {
+    return this.UsersRepository.findOneBy({ username });
   }
 
   update(id: string, updateUserDto: UpdateUserDto): Promise<UpdateResult> {
