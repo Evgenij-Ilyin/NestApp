@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import { Role } from '../../roles/entities/role.entity';
 
 @Entity({ name: 'Users' })
 export class User {
@@ -15,10 +16,17 @@ export class User {
     @Column()
     password: string;
 
+    @Column()
+    roleId: number;
+
+    @ManyToOne(() => Role)
+    @JoinColumn({ name: 'roleId' })
+    role: Role;
+
     constructor(partial: Partial<User>){
         if (partial) {
             Object.assign(this, partial);
         }
-        this.id = uuidv4(); // Generation of UUID when creating a new User
+        this.id = uuidv4();
     }
 }

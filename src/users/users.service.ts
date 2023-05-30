@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { UsersRepository } from './usersRepository';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { hash } from 'bcrypt';
-
-
+import { RolesService } from 'src/roles/roles.service';
+import { RolesRepository } from 'src/roles/rolesRepository';
 
 
 @Injectable()
@@ -15,6 +14,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private UsersRepository: Repository<User>,
+    private RolesService: RolesService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {

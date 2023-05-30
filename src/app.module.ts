@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { Role } from './roles/entities/role.entity';
 
 @Module({
   imports: [UsersModule,
@@ -15,7 +16,7 @@ import { AuthModule } from './auth/auth.module';
     username: 'postgres',
     password: '3880029',
     database: 'NestApp',
-    entities: [User],
+    entities: [User, Role],
     synchronize: true,
     autoLoadEntities: true,
     }),
