@@ -5,10 +5,11 @@ import { UsersService } from 'src/users/users.service';
 import { UsersModule } from 'src/users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
+import { RolesService } from 'src/roles/roles.service';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, UsersService],
+  providers: [AuthService, UsersService, RolesService],
   exports: [AuthService],
   imports: [UsersModule,
   JwtModule.register({

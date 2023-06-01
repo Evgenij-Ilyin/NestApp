@@ -10,8 +10,7 @@ export class UsersController {
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    createUserDto.roleId = 2;
-    return this.usersService.create(createUserDto);
+    return this.usersService.create(createUserDto, 2);
   }
 
   @Get()

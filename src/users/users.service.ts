@@ -8,7 +8,6 @@ import { hash } from 'bcrypt';
 import { RolesService } from 'src/roles/roles.service';
 import { RolesRepository } from 'src/roles/rolesRepository';
 
-
 @Injectable()
 export class UsersService {
   constructor(
@@ -17,9 +16,10 @@ export class UsersService {
     private RolesService: RolesService,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto, roleId: number): Promise<User> {
     createUserDto.password = await hash(createUserDto.password, 10);
     const user = this.UsersRepository.create(createUserDto);
+    user.role = await this.RolesService.findOne(roleId);
     return this.UsersRepository.save(user);
   }
 
